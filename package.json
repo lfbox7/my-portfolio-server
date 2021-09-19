@@ -11,25 +11,10 @@
     "url": "git+https://github.com/lfbox7/my-portfolio-server.git"
   },
   "keywords": [],
-  "author": "Burnt Boot Creek",
+  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/lfbox7/my-portfolio-server/issues"
   },
-  "homepage": "https://github.com/lfbox7/my-portfolio-server#readme",
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "dotenv": "^10.0.0",
-    "express": "^4.17.1",
-    "mongodb": "^4.1.2",
-    "mongoose": "^6.0.6",
-    "webpack": "^5.53.0"
-  },
-  "devDependencies": {
-    "enzyme": "^3.11.0",
-    "jest": "^27.2.0",
-    "nodemon": "^2.0.12",
-    "supertest": "^6.1.6"
-  }
+  "homepage": "https://github.com/lfbox7/my-portfolio-server#readme"
 }
