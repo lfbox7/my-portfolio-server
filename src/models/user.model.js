@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 const schema = mongoose.Schema;
+const uniqueValidator = require('mongoose-unique-validator');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
-const secret = require('../config').secret;
+const secret = require('../config.env').secret;
 
 const userSchema = new schema({
     userName: {
@@ -19,6 +20,14 @@ const userSchema = new schema({
         match: [/\S+@\S+\.\S+/, 'is invalid'],
         index: true
     },
+    name : {
+        firstName: {
+            type: String
+        },
+        lastName: {
+            type: String
+        },
+    },
     image: {
         type: String
     },
@@ -26,16 +35,21 @@ const userSchema = new schema({
         type: String
     },
     address: {
-        type: String
-    },
-    city: {
-        type: String
-    },
-    state: {
-        type: String
-    },
-    zip: {
-        type: Number
+        address1: { 
+            type: String 
+        },
+        address2: { 
+            type: String 
+        },
+        city: { 
+            type: String 
+        },
+        state: {
+            type: String 
+        },
+        zipCode: { 
+            type: Number 
+        },
     },
     hash: {
         type: String,
