@@ -1,70 +1,27 @@
-const { ObjectId } = require('bson');
+const {
+    application
+} = require('express');
 const express = require('express');
-
-const User = require('../models/user.model');
+const users = require('../controllers/user.controller');
 
 const userRouter = express.Router();
 
-userRouter.get('/user', (req, res) => {
-    User.find()
-        .then(result => {
-            res.json(result);
-        })
-        .catch(err => console.log(err));
-});
+module.exports = app => {
 
-userRouter.get('/user/:id', (req, res) => {
-    User.findById({
-        _id: req.params.id
-    })
-        .then(result => {
-            res.json(result);
-        })
-        .catch(err => console.log(err));
-});
+    // Create new user
+    userRouter.post('/', users.createUser);
 
-userRouter.post('/user/add', (req, res) => {
-    
-    const userName = req.body.userName;
-    const email = req.body.email;
-    const password = req.body.password;
-    const image = req.body.image;
-    const bio = req.body.bio;
-    const firstName = req.body.firstName;
-    const lastName = req.body.lastName;
-    const address1 = req.body.address1;
-    const address2 = req.body.address2;
-    const city = req.body.city;
-    const state = req.body.state;
-    const zip = req.body.zip;
-    const user = {
-        userName,
-        email,
-        password,
-        image,
-        bio,
-        name: {
-            firstName,
-            lastName,
-        },
-        address: {
-            address1,
-            address2,
-            city,
-            state,
-            zip
-        }
-    };
-    User.find({
-        email: req.body.email
-    }, (err, result) => {
-        if (err) {
-            console.log(err);
-        } else if (result == null) {
-            User.collection.insertOne(user);
-        }
-    });
-});
+    // Retrieve all users
+    userRouter.get('/', users.findAllUser);
 
+    // Retrieve a single user by id
+    userRouter.get('/:id', users.findOneUser);
 
-module.exports = userRouter;
+    // Update a user by id
+    userRouter.put('/:id', users.updateUser);
+
+    // Delete a user by id
+    userRouter.delete('/:id', users.deleteUser);
+
+    app.use('api/user', router);
+};
