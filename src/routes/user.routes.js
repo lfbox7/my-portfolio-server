@@ -1,10 +1,10 @@
 const express = require('express');
 const userRoutes = express.Router();
-const dbo = require('../../db/conn');
+const dbo = require('../config/conn');
 const ObjectId = require('mongodb').ObjectId;
 
 // read users
-userRoutes.route('user').get((req, res) => {
+userRoutes.route('/user/read').get((req, res) => {
   let db_connect = dbo.getDb('MERN_Stack_Boilerplate');
   db_connect
     .collection('user')
@@ -17,7 +17,7 @@ userRoutes.route('user').get((req, res) => {
 });
 
 // read user
-userRoutes.route('/user/:id').get((req, res) => {
+userRoutes.route('/user/read/:id').get((req, res) => {
   let db_connect = dbo.getDb();
   let myquery = { _id: ObjectId( req.params.id )};
   db_connect
@@ -30,7 +30,7 @@ userRoutes.route('/user/:id').get((req, res) => {
 });
 
 // create user
-userRoutes.route('/user/add').post((req, response) => {
+userRoutes.route('/user/create').post((req, response) => {
   let db_connect = dbo.getDb();
   let myobj = {
     userName: req.body.userName,
@@ -55,7 +55,7 @@ userRoutes.route('/user/add').post((req, response) => {
 });
 
 // update user
-userRoutes.route('/update/:id').post((req, response) => {
+userRoutes.route('/user/update/:id').post((req, response) => {
   let db_connect = dbo.getDb();
   let myquery = { _id: ObjectId( req.params.id )};
   let newvalues = {
@@ -86,7 +86,7 @@ userRoutes.route('/update/:id').post((req, response) => {
 });
 
 // delete user
-userRoutes.route('/:id').delete((req, response) => {
+userRoutes.route('/user/delete/:id').delete((req, response) => {
   let db_connect = dbo.getDb();
   let myquery = { _id: ObjectId( req.params.id )};
   db_connect.collection('users').deleteOne(myquery, (err, obj) => {
