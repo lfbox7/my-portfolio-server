@@ -3,7 +3,7 @@ const schema = mongoose.Schema;
 const uniqueValidator = require('mongoose-unique-validator');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
-const secret = require('../config.env').secret;
+//const secret = require('./config.env').secret;
 
 const userSchema = new schema({
     userName: {

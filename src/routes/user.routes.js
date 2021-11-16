@@ -1,27 +1,100 @@
-const {
-    application
-} = require('express');
 const express = require('express');
-const users = require('../controllers/user.controller');
+const userRoutes = express.Router();
+const dbo = require('../../db/conn');
+const ObjectId = require('mongodb').ObjectId;
 
-const userRouter = express.Router();
+// read users
+userRoutes.route('user').get((req, res) => {
+  let db_connect = dbo.getDb('MERN_Stack_Boilerplate');
+  db_connect
+    .collection('user')
+    .find({})
+    .toArray((err, result) => {
+      if (err) 
+        throw err;
+      res.json(result);
+    });
+});
 
-module.exports = app => {
+// read user
+userRoutes.route('/user/:id').get((req, res) => {
+  let db_connect = dbo.getDb();
+  let myquery = { _id: ObjectId( req.params.id )};
+  db_connect
+      .collection('users')
+      .findOne(myquery, (err, result) => {
+        if (err) 
+            throw err;
+        res.json(result);
+      });
+});
 
-    // Create new user
-    userRouter.post('/', users.createUser);
+// create user
+userRoutes.route('/user/add').post((req, response) => {
+  let db_connect = dbo.getDb();
+  let myobj = {
+    userName: req.body.userName,
+    email: req.body.email,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    image: req.body.image,
+    bio: req.body.bio,
+    phone: req.body.phone,
+    address1: req.body.address1,
+    address2: req.body.address2,
+    city: req.body.city,
+    state: req.body.state,
+    zip: req.body.zip,
+    password: req.body.password,
+  };
+  db_connect.collection('users').insertOne(myobj, (err, res) => {
+    if (err) 
+        throw err;
+    response.json(res);
+  });
+});
 
-    // Retrieve all users
-    userRouter.get('/', users.findAllUser);
+// update user
+userRoutes.route('/update/:id').post((req, response) => {
+  let db_connect = dbo.getDb();
+  let myquery = { _id: ObjectId( req.params.id )};
+  let newvalues = {
+    $set: {
+        userName: req.body.userName,
+        email: req.body.email,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        image: req.body.image,
+        bio: req.body.bio,
+        phone: req.body.phone,
+        address1: req.body.address1,
+        address2: req.body.address2,
+        city: req.body.city,
+        state: req.body.state,
+        zip: req.body.zip,
+        password: req.body.password,
+    },
+  };
+  db_connect
+    .collection('users')
+    .updateOne(myquery, newvalues, (err, res) => {
+      if (err) 
+        throw err;
+      console.log('1 document updated');
+      response.json(res);
+    });
+});
 
-    // Retrieve a single user by id
-    userRouter.get('/:id', users.findOneUser);
+// delete user
+userRoutes.route('/:id').delete((req, response) => {
+  let db_connect = dbo.getDb();
+  let myquery = { _id: ObjectId( req.params.id )};
+  db_connect.collection('users').deleteOne(myquery, (err, obj) => {
+    if (err) 
+        throw err;
+    console.log('1 document deleted');
+    response.status(obj);
+  });
+});
 
-    // Update a user by id
-    userRouter.put('/:id', users.updateUser);
-
-    // Delete a user by id
-    userRouter.delete('/:id', users.deleteUser);
-
-    app.use('api/user', router);
-};
+module.exports = userRoutes;
