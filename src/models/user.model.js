@@ -3,7 +3,7 @@ const schema = mongoose.Schema;
 const uniqueValidator = require('mongoose-unique-validator');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
-const { secret } = require('./config.env').secret;
+const secret = require('../config').secret;
 
 const userSchema = new schema({
     userName: {
@@ -58,7 +58,13 @@ const userSchema = new schema({
     salt: {
         type: String,
         required: true
-    }
+    },
+    roles: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Role"
+        }
+    ],
 }, 
 {
     timestamps: true
